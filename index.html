@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Kinect Testing</title>
+        <script src="http://code.jquery.com/jquery-3.3.1.min.js"
+                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+                crossorigin="anonymous"></script>
+        <script src="kinectron.bundle.js"></script>
+        <style>
+            #dot {
+                position: absolute;
+                top: 50%;
+                right: 50%;
+                transform: translate(-50%, -50%);
+                background-color: red;
+                mix-blend-mode: multiply;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>RIGHT HAND X: <span id="handrightx"></span></h1>
+        <h1>RIGHT HAND Y: <span id="handrighty"></span></h1>
+        <div id="dot"></div>
+        <script>
+            var kinectron = new Kinectron('192.168.86.179');
+            kinectron.makeConnection();
+            kinectron.startTrackedJoint(kinectron.HANDRIGHT, function(hand) {
+                console.log('hand x: ', hand.cameraX);
+                console.log('hand y: ', hand.cameraY);
+
+                var x = (hand.cameraX * 100) + '%';
+                var y = (hand.cameraY *-100)   + '%';
+
+                $('#handrightx').text(hand.cameraX);
+                $('#handrighty').text(hand.cameraY);
+                $('#dot').attr('style', 'top: ' + y + '; left: ' + x + ';');
+                // $('#dot').attr('style','top: 10%; left: 10%;');
+            })
+        </script>
+    </body>
+</html>
